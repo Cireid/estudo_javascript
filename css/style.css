@@ -1,0 +1,15 @@
+.dNone{
+    display: none;
+}
+
+.dFlex{
+    display: flex;
+}
+
+.green{
+    background-color: green;
+}
+
+.red{
+    background-color: red;
+}
