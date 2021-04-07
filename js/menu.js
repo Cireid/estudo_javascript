@@ -4,7 +4,7 @@ let comidas = [
         img: '/img/cuscuz.jfif',
         nome: 'cuscuz',
         preco: 3.10,
-        tipo: ['café', 'almoço', 'jantar'],
+        tipo: 'cafe',
         desc: 'alguma coisa do produto'
     },
 
@@ -12,7 +12,7 @@ let comidas = [
         id: 2,
         img: '/img/ovo.jfif',
         nome: 'ovo',
-        tipo: ['café', 'jantar'],
+        tipo: 'cafe',
         preco: 0.50,
         desc: 'alguma coisa do produto'
     },
@@ -21,7 +21,7 @@ let comidas = [
         id: 3,
         img: '/img/torradas.jfif',
         nome: 'torradas',
-        tipo: ['café'],
+        tipo: 'cafe',
         preco: 1.10,
         desc: 'alguma coisa do produto'
     },
@@ -31,7 +31,7 @@ let comidas = [
         img: '/img/feijao.jfif',
         nome: 'feijão',
         preco: 43.10,
-        tipo: ['almoço'],
+        tipo: 'almoco',
         desc: 'alguma coisa do produto'
     },
     {
@@ -39,24 +39,23 @@ let comidas = [
         img: '/img/pudim.jfif',
         nome: 'pudim',
         preco: 13.10,
-        tipo: ['sobremesa'],
+        tipo: 'sobremesa',
         desc: 'alguma coisa do produto'
     },
 ];
 
 const menu = document.querySelector('.menu')
-const botao = document.querySelector('.areaBotao')
+
+const areaBotao = document.querySelector('.areaBotao')
 
 
 window.addEventListener('DOMContentLoaded', function(){
     mostrarItems(comidas);
-    mostrarBotoesMenu()
-
+    mostrarBotao();
 })
 
-
-function mostrarItems(){
-    let mostrarMenu = comidas.map(function(item){
+function mostrarItems(itemComidas){
+    let mostrarMenu = itemComidas.map(function(item){
         return `
         <div class="col-6 my-2">
             <div class="row">
@@ -79,77 +78,42 @@ function mostrarItems(){
     menu.innerHTML = mostrarMenu
 }
 
-function mostrarBotoesMenu(){
-    const categorias = comidas.reduce(function (valores, item) {
-        console.log(item)
-            if(!valores.includes(item.tipo)){
-                valores.push(item.tipo)
-                console.log(valores)
-            }
-            return valores
-        }
-        ['all']
-    );
 
-    const categoriaBTN = categorias.map(
-        function(tipo){
-            return `<button type="button" class="filtro" data-id="${tipo}>${tipo}</button>`
-        }
-    ).join("")
+function mostrarBotao(){
+    const categorias = comidas.reduce(function(valores, item){
+        if(!valores.includes(item.tipo)){
+            valores.push(item.tipo)
+        };
+        return valores;
+    }, ['todos']);
 
-    botao.innerHTML = categoriaBTN;
-    const filterBTN = botao.querySelectorAll('.filtro')
-    console.log(filterBTN)
+    const botaoCategoria = categorias.map(function(tipo){
+        return `<button class="filtro-btn mx-2" type="button" data-id="${tipo}">${tipo}</button>`
+    }).join("");
 
-    filterBTN.forEach(function(btn){
+    areaBotao.innerHTML = botaoCategoria;
+    const filtro = document.querySelectorAll('.filtro-btn');
+
+    filtro.forEach(function(btn){
         btn.addEventListener('click', function(e){
-            const category = e.currentTarget.dataset.id;
-            const menuCat = comidas.filter(function(menuItem){
-                if(menuItem.category === category){
-                    return menuItem
-                }
+            const categoria = e.currentTarget.dataset.id;
+            const menuCategoria = comidas.filter(function(itemMenu){
+                if(itemMenu.tipo === categoria){
+                    return itemMenu;
+                };
             });
-            if(category === 'all'){
-                mostrarMenu(comidas)
+            if(categoria === 'todos'){
+                mostrarItems(comidas)
                 return;
-            }
-            mostrarMenu(menuCat)
-        })
-    })
+            };
+            mostrarItems(menuCategoria);
+        });
+    });
 }
-
-    
-//     filtro.forEach(function(btn){
-//         filtro.addEventListener('click', function(e){
-//             const categoria = e.currentTarget.dataset.id;
-        
-//             const menuCat = comidas.filter(function(item){
-//                 if(item.tipo === categoria){
-//                     return menuCat
-//                 }
-//             })
-//             if(categoria === 'todos'){
-//                 mostrarMenu(comidas)
-//                 return;
-//             }
-//             mostrarMenu(menuCat)
-        
-//         })
-//     })
-
-
-
-
-// console.log(filtro)
-
-
-
-
-
 
 
 //Motivo de não ter dado certo é por falta de map não tem como declarar variavel dentro de um foreach pra
-//consumis os dados corretamente
+//consumir os dados corretamente
 
 // window.addEventListener('DOMContentLoaded', function() {
 //     comidas.forEach(item => {
